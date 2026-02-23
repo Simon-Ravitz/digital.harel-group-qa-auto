@@ -2,7 +2,7 @@
 <suite name="Harel Travel Policy Suite">
   <test name="Travel Policy E2E">
     <classes>
-      <class name="com.harel.travel.TravelPolicyTest"/>
+      <class name="com.harel.travel.tests.TravelPolicyTest"/>
     </classes>
   </test>
 </suite>
