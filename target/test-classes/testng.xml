@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Harel Travel Policy Suite">
+  <test name="Travel Policy E2E">
+    <classes>
+      <class name="com.harel.travel.TravelPolicyTest"/>
+    </classes>
+  </test>
+</suite>
