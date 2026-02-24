@@ -29,3 +29,14 @@ Override base URL:
 ```bash
 mvn -Dheadless=true -DbaseUrl="https://digital.harel-group.co.il/travel-policy" test
 ```
+
+## Render (Docker)
+This repo can run tests and serve the Extent report as a web service.
+
+If using Render:
+- Service type: Web Service
+- Environment: Docker
+- Port: 8080
+- Start command: default (uses entrypoint.sh)
+
+The service will run tests on startup and then serve the report at `/`.
