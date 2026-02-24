@@ -7,12 +7,14 @@ import com.harel.travel.pages.StartPage;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class TravelPolicyTest extends BaseTest {
 
     @Test
     public void travelPolicyFlow() {
-        LocalDate departure = LocalDate.now().plusDays(7);
+        ZoneId tz = ZoneId.of(System.getProperty("tz", "Asia/Jerusalem"));
+        LocalDate departure = LocalDate.now(tz).plusDays(7);
         LocalDate retorno = departure.plusDays(30);
 
         DateSelectionPage dates = new StartPage(driver, wait)
