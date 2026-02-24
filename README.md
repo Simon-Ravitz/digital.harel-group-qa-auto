@@ -1,5 +1,10 @@
 # Harel Travel Policy QA (Selenium + TestNG)
 
+[![CI](https://github.com/Simon-Ravitz/digital.harel-group-qa-auto/actions/workflows/ci.yml/badge.svg)](https://github.com/Simon-Ravitz/digital.harel-group-qa-auto/actions/workflows/ci.yml)
+[![Report](https://github.com/Simon-Ravitz/digital.harel-group-qa-auto/actions/workflows/report.yml/badge.svg)](https://github.com/Simon-Ravitz/digital.harel-group-qa-auto/actions/workflows/report.yml)
+
+Latest report: https://digital-harel-group-qa-auto.onrender.com
+
 ## Requirements
 - Java 17+
 - Maven 3.8+

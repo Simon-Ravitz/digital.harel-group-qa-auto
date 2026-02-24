@@ -1,0 +1,67 @@
+name: Report Publish
+
+on:
+  push:
+    branches: ["main"]
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "maven"
+
+      - name: Run tests (headless)
+        run: mvn -Dheadless=true test
+
+      - name: Publish Extent report to report branch
+        run: |
+          set -euo pipefail
+          REPORT_DIR=target/extent-report
+          if [ ! -d "$REPORT_DIR" ]; then
+            echo "Report directory not found: $REPORT_DIR" >&2
+            exit 1
+          fi
+
+          rm -rf /tmp/report-branch
+          git clone --depth 1 --branch report "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/report-branch || true
+
+          if [ ! -d /tmp/report-branch/.git ]; then
+            mkdir -p /tmp/report-branch
+            cd /tmp/report-branch
+            git init
+            git checkout -b report
+            git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          else
+            cd /tmp/report-branch
+          fi
+
+          rm -rf /tmp/report-branch/*
+          cp -R "$GITHUB_WORKSPACE/$REPORT_DIR"/* /tmp/report-branch/
+
+          git add -A
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          if git diff --cached --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+
+          git commit -m "Update Extent report"
+          git push -u origin report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
