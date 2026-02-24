@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPORT_DIR="/app/target/extent-report"
+PUBLIC_DIR="/app/public"
+
+mkdir -p "$PUBLIC_DIR"
+cat > "$PUBLIC_DIR/index.html" <<'HTML'
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><title>Report Generating</title></head>
+  <body>
+    <h2>Report is being generated...</h2>
+    <p>Please refresh in a couple of minutes.</p>
+  </body>
+</html>
+HTML
+
+# Start server immediately so Render detects the open port
+python3 -m http.server 8080 --bind 0.0.0.0 --directory "$PUBLIC_DIR" &
+SERVER_PID=$!
+
 # Run tests to generate the report (unless SKIP_TESTS=true)
 if [ "${SKIP_TESTS:-false}" != "true" ]; then
   echo "Running tests..."
@@ -11,12 +30,12 @@ else
   echo "SKIP_TESTS=true, skipping test execution."
 fi
 
-# Serve the Extent report
-REPORT_DIR="/app/target/extent-report"
-if [ ! -d "$REPORT_DIR" ]; then
-  echo "Report directory not found: $REPORT_DIR" >&2
-  exit 1
+if [ -d "$REPORT_DIR" ]; then
+  rm -rf "$PUBLIC_DIR"/*
+  cp -R "$REPORT_DIR"/* "$PUBLIC_DIR"/
+  echo "Report published to $PUBLIC_DIR"
+else
+  echo "Report directory not found: $REPORT_DIR"
 fi
 
-cd "$REPORT_DIR"
-python3 -m http.server 8080
+wait "$SERVER_PID"
