@@ -2,6 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Jerusalem
+ENV MAVEN_OPTS="-Xmx256m"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
