@@ -8,10 +8,17 @@ mkdir -p "$PUBLIC_DIR"
 cat > "$PUBLIC_DIR/index.html" <<'HTML'
 <!doctype html>
 <html lang="en">
-  <head><meta charset="utf-8"><title>Report Generating</title></head>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="20">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Report Generating</title>
+  </head>
   <body>
     <h2>Report is being generated...</h2>
-    <p>Please refresh in a couple of minutes.</p>
+    <p>Please refresh in a couple of minutes. This page will auto-refresh.</p>
   </body>
 </html>
 HTML
@@ -32,7 +39,8 @@ fi
 
 if [ -d "$REPORT_DIR" ]; then
   rm -rf "$PUBLIC_DIR"/*
-  cp -R "$REPORT_DIR"/* "$PUBLIC_DIR"/
+  rsync -a --delete "$REPORT_DIR"/ "$PUBLIC_DIR"/
+  ls -la "$PUBLIC_DIR"
   echo "Report published to $PUBLIC_DIR"
 else
   echo "Report directory not found: $REPORT_DIR"
