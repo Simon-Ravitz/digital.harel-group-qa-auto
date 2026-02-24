@@ -39,7 +39,12 @@ fi
 
 if [ -d "$REPORT_DIR" ]; then
   rm -rf "$PUBLIC_DIR"/*
-  rsync -a --delete "$REPORT_DIR"/ "$PUBLIC_DIR"/
+  cp -R "$REPORT_DIR"/* "$PUBLIC_DIR"/
+  if [ -f "$PUBLIC_DIR/index.html" ]; then
+    echo "Report index found: $PUBLIC_DIR/index.html"
+  else
+    echo "Report index missing in $PUBLIC_DIR"
+  fi
   ls -la "$PUBLIC_DIR"
   echo "Report published to $PUBLIC_DIR"
 else
