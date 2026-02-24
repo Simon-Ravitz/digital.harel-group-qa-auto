@@ -15,6 +15,10 @@ mvn -Dheadless=false test
 mvn -Dheadless=true test
 ```
 
+## Report
+After execution, open:
+- `target/extent-report/index.html`
+
 ## Optional
 Override base URL:
 ```bash
