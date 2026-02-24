@@ -14,6 +14,7 @@
     <testng.version>7.10.2</testng.version>
     <webdrivermanager.version>5.8.0</webdrivermanager.version>
     <slf4j.version>2.0.12</slf4j.version>
+    <extent.version>5.1.2</extent.version>
   </properties>
 
   <dependencies>
@@ -37,6 +38,11 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aventstack</groupId>
+      <artifactId>extentreports</artifactId>
+      <version>${extent.version}</version>
     </dependency>
   </dependencies>
 
