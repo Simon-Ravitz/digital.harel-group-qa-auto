@@ -19,7 +19,7 @@ public class DateSelectionPage extends BasePage {
 
     public DateSelectionPage pickDateRange(LocalDate start, LocalDate end) {
         openDatePicker();
-        if (!tryPickDateByHrlBo(start, end)) {
+        if (!pickDateByHrlBo(start, end)) {
             throw new NoSuchElementException("Could not select dates using data-hrl-bo");
         }
         return this;
