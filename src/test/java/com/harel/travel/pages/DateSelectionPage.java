@@ -74,6 +74,9 @@ public class DateSelectionPage extends BasePage {
         String startIso = ISO_DATE.format(start);
         String endIso = ISO_DATE.format(end);
 
+        // Wait for calendar buttons to appear
+        wait.until(driver -> !driver.findElements(By.cssSelector("[data-hrl-bo]")).isEmpty());
+
         By startBy = By.cssSelector("[data-hrl-bo='" + startIso + "']:not([disabled])");
         By endBy = By.cssSelector("[data-hrl-bo='" + endIso + "']:not([disabled])");
 
@@ -83,6 +86,7 @@ public class DateSelectionPage extends BasePage {
             com.harel.travel.core.ExtentLogger.info("Pick dates by data-hrl-bo: " + startIso + " -> " + endIso);
             return true;
         }
+        com.harel.travel.core.ExtentLogger.info("Dates not found by data-hrl-bo. start=" + startIso + ", end=" + endIso);
         return false;
     }
 
