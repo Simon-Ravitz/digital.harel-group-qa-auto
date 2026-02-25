@@ -19,10 +19,11 @@ public class DateSelectionPage extends BasePage {
 
     public DateSelectionPage pickDateRange(LocalDate start, LocalDate end) {
         openDatePicker();
-        if (!pickDateByHrlBo(start, end)) {
-            throw new NoSuchElementException("Could not select dates using data-hrl-bo");
-        }
-        return this;
+        if (tryPickDateByHrlBo(start, end)) return this;
+        if (tryPickDateByDataAttr(start, end)) return this;
+        if (tryPickDateByAriaLabel(start, end)) return this;
+        if (tryTypeIntoDateInputs(start, end)) return this;
+        throw new NoSuchElementException("Could not select dates using available strategies");
     }
 
     public DateSelectionPage assertTotalDays(LocalDate start, LocalDate end) {
@@ -70,7 +71,7 @@ public class DateSelectionPage extends BasePage {
         }
     }
 
-    private boolean pickDateByHrlBo(LocalDate start, LocalDate end) {
+    private boolean tryPickDateByHrlBo(LocalDate start, LocalDate end) {
         String startIso = ISO_DATE.format(start);
         String endIso = ISO_DATE.format(end);
 
@@ -86,8 +87,61 @@ public class DateSelectionPage extends BasePage {
             com.harel.travel.core.ExtentLogger.info("Pick dates by data-hrl-bo: " + startIso + " -> " + endIso);
             return true;
         }
+
         com.harel.travel.core.ExtentLogger.info("Dates not found by data-hrl-bo. start=" + startIso + ", end=" + endIso);
         return false;
+    }
+
+    private boolean tryPickDateByDataAttr(LocalDate start, LocalDate end) {
+        String startIso = ISO_DATE.format(start);
+        String endIso = ISO_DATE.format(end);
+
+        By startBy = By.cssSelector("[data-date='" + startIso + "']");
+        By endBy = By.cssSelector("[data-date='" + endIso + "']");
+
+        if (!driver.findElements(startBy).isEmpty() && !driver.findElements(endBy).isEmpty()) {
+            clickIfPresent(startBy);
+            clickIfPresent(endBy);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean tryPickDateByAriaLabel(LocalDate start, LocalDate end) {
+        String startLabel = start.format(DateTimeFormatter.ofPattern("d MMMM yyyy"));
+        String endLabel = end.format(DateTimeFormatter.ofPattern("d MMMM yyyy"));
+
+        By startBy = By.cssSelector("[aria-label*='" + startLabel + "']");
+        By endBy = By.cssSelector("[aria-label*='" + endLabel + "']");
+
+        if (!driver.findElements(startBy).isEmpty() && !driver.findElements(endBy).isEmpty()) {
+            clickIfPresent(startBy);
+            clickIfPresent(endBy);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean tryTypeIntoDateInputs(LocalDate start, LocalDate end) {
+        List<WebElement> inputs = driver.findElements(By.cssSelector("input[type='text'], input[type='date']"));
+        if (inputs.size() < 2) return false;
+
+        String startVal = DISPLAY_DDMMYYYY.format(start);
+        String endVal = DISPLAY_DDMMYYYY.format(end);
+
+        WebElement first = inputs.get(0);
+        WebElement second = inputs.get(1);
+
+        scrollIntoView(first);
+        first.click();
+        first.sendKeys(Keys.chord(Keys.CONTROL, "a"), startVal, Keys.TAB);
+
+        scrollIntoView(second);
+        second.click();
+        second.sendKeys(Keys.chord(Keys.CONTROL, "a"), endVal, Keys.TAB);
+
+        com.harel.travel.core.ExtentLogger.info("Type dates into inputs: " + startVal + " -> " + endVal);
+        return true;
     }
 
     private void clickIfPresent(By by) {
