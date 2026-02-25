@@ -15,21 +15,25 @@ public class TestListener implements ITestListener {
     public void onTestStart(ITestResult result) {
         ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName());
         test.set(extentTest);
+        ExtentLogger.setTest(extentTest);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
         test.get().log(Status.PASS, "Test passed");
+        ExtentLogger.clear();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
         test.get().log(Status.FAIL, result.getThrowable());
+        ExtentLogger.clear();
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         test.get().log(Status.SKIP, "Test skipped");
+        ExtentLogger.clear();
     }
 
     @Override

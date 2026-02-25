@@ -24,6 +24,16 @@ mvn -Dheadless=true test
 After execution, open:
 - `target/extent-report/index.html`
 
+## Remote Selenium Grid
+You can run the tests against a remote Selenium Grid by setting `REMOTE_URL`.
+If `REMOTE_URL` is not set, the tests use local Chrome.
+
+Example:
+```bash
+export REMOTE_URL="https://USERNAME:ACCESS_KEY@hub-cloud.browserstack.com/wd/hub"
+mvn -Dheadless=true test
+```
+
 ## Optional
 Override base URL:
 ```bash
