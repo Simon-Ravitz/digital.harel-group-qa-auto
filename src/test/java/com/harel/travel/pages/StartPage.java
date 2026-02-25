@@ -20,11 +20,13 @@ public class StartPage extends BasePage {
             baseUrl = DEFAULT_BASE_URL;
         }
         driver.get(baseUrl);
+        com.harel.travel.core.ExtentLogger.info("Open start page: " + baseUrl);
         return this;
     }
 
     public StartPage clickFirstPurchase() {
         clickByVisibleText("לרכישה בפעם הראשונה");
+        com.harel.travel.core.ExtentLogger.info("Click: לרכישה בפעם הראשונה");
         return this;
     }
 
@@ -39,6 +41,7 @@ public class StartPage extends BasePage {
             WebElement tile = usaTiles.get(0);
             scrollIntoView(tile);
             tile.click();
+            com.harel.travel.core.ExtentLogger.info("Select destination: USA");
             return this;
         }
 
@@ -48,6 +51,7 @@ public class StartPage extends BasePage {
             WebElement tile = radios.get(0);
             scrollIntoView(tile);
             tile.click();
+            com.harel.travel.core.ExtentLogger.info("Select destination: first available radio");
             return this;
         }
 
@@ -57,6 +61,7 @@ public class StartPage extends BasePage {
             WebElement tile = dests.get(0);
             scrollIntoView(tile);
             tile.click();
+            com.harel.travel.core.ExtentLogger.info("Select destination: first id=destination-*");
             return this;
         }
 

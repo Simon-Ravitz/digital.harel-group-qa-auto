@@ -40,11 +40,13 @@ public class DateSelectionPage extends BasePage {
         int days = extractFirstInt(text);
         Assert.assertTrue(days == expectedExclusive || days == expectedInclusive,
                 "Expected total days to be " + expectedExclusive + " or " + expectedInclusive + " but was " + days + " (text: " + text + ")");
+        com.harel.travel.core.ExtentLogger.info("Total days displayed: " + days);
         return this;
     }
 
     public PassengersPage goToPassengers() {
         clickByVisibleText("הלאה לפרטי הנוסעים");
+        com.harel.travel.core.ExtentLogger.info("Click: הלאה לפרטי הנוסעים");
         return new PassengersPage(driver, wait);
     }
 
@@ -63,6 +65,7 @@ public class DateSelectionPage extends BasePage {
                 WebElement el = els.get(0);
                 scrollIntoView(el);
                 el.click();
+                com.harel.travel.core.ExtentLogger.info("Open date picker");
                 return;
             }
         }
@@ -93,6 +96,7 @@ public class DateSelectionPage extends BasePage {
         if (!driver.findElements(startBy).isEmpty() && !driver.findElements(endBy).isEmpty()) {
             clickIfPresent(startBy);
             clickIfPresent(endBy);
+            com.harel.travel.core.ExtentLogger.info("Pick dates by data-hrl-bo: " + startIso + " -> " + endIso);
             return true;
         }
         return false;
@@ -131,6 +135,7 @@ public class DateSelectionPage extends BasePage {
         second.click();
         second.sendKeys(Keys.chord(Keys.CONTROL, "a"), endVal, Keys.TAB);
 
+        com.harel.travel.core.ExtentLogger.info("Type dates into inputs: " + startVal + " -> " + endVal);
         return true;
     }
 

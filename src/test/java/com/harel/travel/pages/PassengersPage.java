@@ -18,6 +18,7 @@ public class PassengersPage extends BasePage {
         Assert.assertFalse(headings.isEmpty(), "Passengers page did not open (no heading found)");
         Assert.assertTrue(driver.getCurrentUrl().contains("/travel-policy/wizard/travelers"),
                 "Unexpected URL: " + driver.getCurrentUrl());
+        com.harel.travel.core.ExtentLogger.info("Passengers page opened: " + driver.getCurrentUrl());
         return this;
     }
 }

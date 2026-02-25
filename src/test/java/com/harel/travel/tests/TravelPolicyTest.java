@@ -17,6 +17,8 @@ public class TravelPolicyTest extends BaseTest {
         LocalDate departure = LocalDate.now(tz).plusDays(7);
         LocalDate retorno = departure.plusDays(30);
 
+        com.harel.travel.core.ExtentLogger.info("Start test with departure=" + departure + ", return=" + retorno);
+
         DateSelectionPage dates = new StartPage(driver, wait)
                 .open()
                 .clickFirstPurchase()
